@@ -42,16 +42,18 @@ namespace OniTemplate.Editor.Model
                     Cells[x + y] = cell;
 
                     var image = new Image();
+                    image.DataContext = cell;
                     Grid.SetRow(image, x);
                     Grid.SetColumn(image, y);
-                    grid.Children.Add(image);
 
-                    Binding imageBinding = new Binding();
+                    Binding imageBinding = new Binding("PaletteItem.ImageUri");
                     imageBinding.Source = cell;
-                    imageBinding.Path = new PropertyPath("PaletteItem.ImageUri");
                     imageBinding.Mode = BindingMode.TwoWay;
                     imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                    imageBinding.Converter = new ImagePathConverter();
                     BindingOperations.SetBinding(image, Image.SourceProperty, imageBinding);
+                    
+                    grid.Children.Add(image);
                 }
             }
         }

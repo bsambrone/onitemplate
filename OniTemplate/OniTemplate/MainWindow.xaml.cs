@@ -102,9 +102,14 @@ namespace OniTemplate
                 var hit = VisualTreeHelper.HitTest(viewer, e.GetPosition(this));
                 if (hit == null) { return; }
 
-
                 var gridPosition = mainGrid.GetColumnRow(e.GetPosition(viewer));
-                MessageBox.Show(string.Format("Grid location Row: {1} Column: {0}", gridPosition.X, gridPosition.Y));
+
+                var cell = mainGrid.Children.Cast<UIElement>().First(g =>
+                    Grid.GetRow(g) == gridPosition.X && Grid.GetColumn(g) == gridPosition.Y) as Image;
+                var current = cell.DataContext as TemplateCell;
+                current.PaletteItem = data;
+                cell.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + data.ImageUri));
+                cell.UpdateLayout();
             }
         }
 

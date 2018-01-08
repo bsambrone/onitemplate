@@ -11,9 +11,6 @@
     <Window.Resources>
         <editor:ImagePathConverter x:Key="ImagePathConverter"/>
     </Window.Resources>
-    <Window.DataContext>
-        <model:EditorViewModel/>
-    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>

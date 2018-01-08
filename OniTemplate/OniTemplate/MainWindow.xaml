@@ -8,9 +8,12 @@
         xmlns:model="clr-namespace:OniTemplate.Editor.Model"
         mc:Ignorable="d"
         Title="MainWindow" Height="768" Width="1024" WindowState="Maximized">
-<Window.Resources>
-    <editor:ImagePathConverter x:Key="ImagePathConverter"/>
-</Window.Resources>
+    <Window.Resources>
+        <editor:ImagePathConverter x:Key="ImagePathConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <model:EditorViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -29,7 +32,7 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
-            <TreeView Name="PaletteTree" Grid.Column="0" Grid.Row="0">
+            <TreeView Name="PaletteTree" Grid.Column="0" Grid.Row="0" MouseMove="PaletteTree_OnMouseMove" PreviewMouseLeftButtonDown="PaletteTree_OnPreviewMouseLeftButtonDown">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type model:PaletteCollection}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
@@ -43,7 +46,6 @@
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="64">
                             <Image Source="{Binding ImageUri, Converter={StaticResource ImagePathConverter}}"/>
                             <TextBlock Text="{Binding Name}" />
-
                         </StackPanel>
                     </DataTemplate>
                 </TreeView.Resources>
@@ -52,43 +54,43 @@
             <TextBlock Grid.Column="0" Grid.Row="1">property window</TextBlock>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                <editor:BorderGrid>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  DragEnter="MainGrid_OnDragEnter" Drop="MainGrid_OnDrop" AllowDrop="True">
+                <editor:BorderGrid x:Name="MainGrid" MaxHeight="1024" MaxWidth="1024" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <editor:BorderGrid.ColumnDefinitions>
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
-                        <ColumnDefinition Width="64" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
                     </editor:BorderGrid.ColumnDefinitions>
                     <editor:BorderGrid.RowDefinitions>
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
-                        <RowDefinition Height="64" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="50" />
                     </editor:BorderGrid.RowDefinitions>
                 </editor:BorderGrid>
             </ScrollViewer>

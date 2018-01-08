@@ -70,6 +70,8 @@
     <Compile Include="Editor\Model\PaletteCollection.cs" />
     <Compile Include="Editor\Model\PaletteItem.cs" />
     <Compile Include="Editor\Model\EditorViewModel.cs" />
+    <Compile Include="Editor\TemplateCell.cs" />
+    <Compile Include="Extensions\GridExtensions.cs" />
     <Compile Include="Extensions\TemperatureConverters.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -115,7 +117,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\null.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\40px-Blossom_Seed_Blank.png" />
     <Resource Include="Images\40px-Briar_Seed_Blank.png" />

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace OniTemplate.Model
 {
@@ -15,5 +11,15 @@ namespace OniTemplate.Model
         public List<Pickupable> Pickupables { get; set; }
         public List<ElementalOre> ElementalOres { get; set; }
         public List<OtherEntity> OtherEntities { get; set; }
+
+        public Template()
+        {
+            Info = new Info();
+            Cells = new List<Cell>();
+            Buildings = new List<Building>();
+            Pickupables = new List<Pickupable>();
+            ElementalOres = new List<ElementalOre>();
+            OtherEntities = new List<OtherEntity>();
+        }
     }
 }

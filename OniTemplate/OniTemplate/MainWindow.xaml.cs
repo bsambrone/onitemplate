@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,10 @@ using System.Windows.Shapes;
 using OniTemplate.Editor;
 using OniTemplate.Editor.Model;
 using OniTemplate.Extensions;
+using OniTemplate.Model;
+using OniTemplate.Model.Serialization;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace OniTemplate
 {
@@ -60,7 +65,6 @@ namespace OniTemplate
                 // Get the dragged TreeView
                 var treeView = sender as TreeView;
                 var selected = treeView.SelectedItem;
-                //TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
                 // Find the data behind the TreeViewItem
                 var data = selected as PaletteItem;
@@ -100,8 +104,9 @@ namespace OniTemplate
                 CurrentColumn = gridPosition.Y;
 
                 var cell = mainGrid.Children.Cast<UIElement>().First(g =>
-                    Grid.GetRow(g) == gridPosition.Y && Grid.GetColumn(g) == gridPosition.X) as Image;
-                cell.DataContext = new PaletteItem() { ImageUri = data.ImageUri, Name = data.Name };
+                    Grid.GetRow(g) == gridPosition.Y && Grid.GetColumn(g) == gridPosition.X) as Image;   
+                var newPaletteItem = new PaletteItem() { ImageUri = data.ImageUri, Name = data.Name, TileType = data.TileType };
+                cell.DataContext = newPaletteItem;
                 Binding imageBinding = new Binding("PaletteItem.ImageUri");
                 imageBinding.Source = cell;
                 imageBinding.Mode = BindingMode.TwoWay;
@@ -109,9 +114,48 @@ namespace OniTemplate
                 imageBinding.Converter = new ImagePathConverter();
                 BindingOperations.SetBinding(cell, Image.SourceProperty, imageBinding);
                 cell.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + data.ImageUri));
+
+                var targetTemplateCell = EditorViewModel.Cells.First(x=>x.Column == gridPosition.X && x.Row == gridPosition.Y);
+                targetTemplateCell.PaletteItem = newPaletteItem;
+                
             }
         }
 
 
+        private void SaveAsTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            var template = new Template();
+
+            // get the name
+            template.Name = EditorViewModel.TemplateName ?? "undefined";
+
+            // get the size
+            template.Info.Size.X = EditorViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null).Max(x => x.Column);
+            template.Info.Size.Y = EditorViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null).Max(x => x.Row);
+
+            // get list of cells that aren't null
+            var cells = EditorViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null);
+            foreach (var cell in cells)
+            {
+                var templateCell = new Cell();
+                templateCell.DiseaseCount = null;
+                templateCell.DiseaseName = null;
+                templateCell.Element = ElementConverter.Convert(cell.PaletteItem.Name);
+                templateCell.Mass = 1000;
+                templateCell.Temperature = 300;
+                templateCell.location_x = cell.Column;
+                templateCell.location_y = cell.Row;
+                templateCell.preventFoWReveal = null;
+                template.Cells.Add(templateCell);
+            }
+
+            // serialize all the things
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(new CamelCaseNamingConvention())
+                .Build();
+
+            var yaml = serializer.Serialize(template);
+            File.WriteAllText(@"c:\temp\dummy.yaml", yaml);
+        }
     }
 }

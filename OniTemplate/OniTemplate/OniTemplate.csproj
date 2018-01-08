@@ -71,6 +71,7 @@
     <Compile Include="Editor\Model\PaletteCollection.cs" />
     <Compile Include="Editor\Model\PaletteItem.cs" />
     <Compile Include="Editor\Model\EditorViewModel.cs" />
+    <Compile Include="Editor\Model\TileType.cs" />
     <Compile Include="Editor\TemplateCell.cs" />
     <Compile Include="Extensions\GridExtensions.cs" />
     <Compile Include="Extensions\TemperatureConverters.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Model\Info.cs" />
     <Compile Include="Model\OtherValue.cs" />
     <Compile Include="Model\Rottable.cs" />
+    <Compile Include="Model\Serialization\ElementConverter.cs" />
     <Compile Include="Model\Size.cs" />
     <Compile Include="Model\Storage.cs" />
     <Compile Include="Model\Template.cs" />

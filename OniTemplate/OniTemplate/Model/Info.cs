@@ -11,5 +11,10 @@
             // support direct setting only for deserialization purposes
             set => _area = value; 
         }
+
+        public Info()
+        {
+            Size = new Size();
+        }
     }
 }

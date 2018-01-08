@@ -26,6 +26,8 @@ namespace OniTemplate
     {
         private Point startPoint;
 
+        public double CurrentRow = 0;
+        public double CurrentColumn = 0;
         public EditorViewModel EditorViewModel { get; set; }
 
         public MainWindow()
@@ -56,14 +58,20 @@ namespace OniTemplate
                 Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 // Get the dragged TreeView
-                TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
+                var treeView = sender as TreeView;
+                var selected = treeView.SelectedItem;
+                //TreeViewItem treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
 
-                // Find the data behind the ListViewItem
-                var data = treeViewItem.DataContext as PaletteItem;
+                // Find the data behind the TreeViewItem
+                var data = selected as PaletteItem;
+                if (data == null) return;
+                var dragObject = new DragElement();
+                dragObject.ImageUri = data.ImageUri;
+                dragObject.Name = data.Name;
 
                 // Initialize the drag & drop operation
-                DataObject dragData = new DataObject(typeof(PaletteItem), data);
-                DragDrop.DoDragDrop(treeViewItem, dragData, DragDropEffects.Move);
+                DataObject dragData = new DataObject(typeof(DragElement), dragObject);
+                DragDrop.DoDragDrop(treeView, dragData, DragDropEffects.Copy);
             }
         }
 
@@ -84,7 +92,7 @@ namespace OniTemplate
 
         private void MainGrid_OnDragEnter(object sender, DragEventArgs e)
         {
-            if (!e.Data.GetDataPresent(typeof(PaletteItem)) ||
+            if (!e.Data.GetDataPresent(typeof(DragElement)) ||
                 sender == e.Source)
             {
                 e.Effects = DragDropEffects.None;
@@ -93,9 +101,9 @@ namespace OniTemplate
 
         private void MainGrid_OnDrop(object sender, DragEventArgs e)
         {
-            if(e.Data.GetDataPresent(typeof(PaletteItem)))
+            if(e.Data.GetDataPresent(typeof(DragElement)))
             {
-                PaletteItem data = e.Data.GetData(typeof(PaletteItem)) as PaletteItem;
+                DragElement data = e.Data.GetData(typeof(DragElement)) as DragElement;
                 ScrollViewer viewer = sender as ScrollViewer;
                 var mainGrid = viewer.FindName("MainGrid") as BorderGrid;
                 
@@ -103,13 +111,13 @@ namespace OniTemplate
                 if (hit == null) { return; }
 
                 var gridPosition = mainGrid.GetColumnRow(e.GetPosition(viewer));
+                CurrentRow = gridPosition.X;
+                CurrentColumn = gridPosition.Y;
 
                 var cell = mainGrid.Children.Cast<UIElement>().First(g =>
-                    Grid.GetRow(g) == gridPosition.X && Grid.GetColumn(g) == gridPosition.Y) as Image;
-                var current = cell.DataContext as TemplateCell;
-                current.PaletteItem = data;
+                    Grid.GetRow(g) == gridPosition.Y && Grid.GetColumn(g) == gridPosition.X) as Image;
+                cell.DataContext = new PaletteItem() { ImageUri = data.ImageUri, Name = data.Name };
                 cell.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + data.ImageUri));
-                cell.UpdateLayout();
             }
         }
 

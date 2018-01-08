@@ -75,21 +75,6 @@ namespace OniTemplate
             }
         }
 
-        private static T FindAncestor<T>(DependencyObject current)
-            where T : DependencyObject
-        {
-            do
-            {
-                if (current is T)
-                {
-                    return (T)current;
-                }
-                current = VisualTreeHelper.GetParent(current);
-            }
-            while (current != null);
-            return null;
-        }
-
         private void MainGrid_OnDragEnter(object sender, DragEventArgs e)
         {
             if (!e.Data.GetDataPresent(typeof(DragElement)) ||
@@ -117,6 +102,12 @@ namespace OniTemplate
                 var cell = mainGrid.Children.Cast<UIElement>().First(g =>
                     Grid.GetRow(g) == gridPosition.Y && Grid.GetColumn(g) == gridPosition.X) as Image;
                 cell.DataContext = new PaletteItem() { ImageUri = data.ImageUri, Name = data.Name };
+                Binding imageBinding = new Binding("PaletteItem.ImageUri");
+                imageBinding.Source = cell;
+                imageBinding.Mode = BindingMode.TwoWay;
+                imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+                imageBinding.Converter = new ImagePathConverter();
+                BindingOperations.SetBinding(cell, Image.SourceProperty, imageBinding);
                 cell.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + data.ImageUri));
             }
         }

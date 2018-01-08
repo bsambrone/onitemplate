@@ -65,6 +65,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Editor\BorderGrid.cs" />
+    <Compile Include="Editor\ImagePathConverter.cs" />
+    <Compile Include="Editor\Model\PaletteCollection.cs" />
+    <Compile Include="Editor\Model\PaletteItem.cs" />
+    <Compile Include="Editor\Model\EditorViewModel.cs" />
     <Compile Include="Extensions\TemperatureConverters.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -109,6 +114,54 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\40px-Blossom_Seed_Blank.png" />
+    <Resource Include="Images\40px-Briar_Seed_Blank.png" />
+    <Resource Include="Images\40px-Mealwood_Seed_Blank.png" />
+    <Resource Include="Images\40px-Pincha_Pepper_Seed_Blank.png" />
+    <Resource Include="Images\40px-Sleet_Wheat_Grain_Blank.png" />
+    <Resource Include="Images\40px-Thimble_Reed_Seed_Blank.png" />
+    <Resource Include="Images\40px-Wheezewort_Seed_Blank.png" />
+    <Resource Include="Images\50px-Abyssalite.png" />
+    <Resource Include="Images\50px-Algae.png" />
+    <Resource Include="Images\50px-Bleach_Stone.png" />
+    <Resource Include="Images\50px-Carbon_Dioxide.png" />
+    <Resource Include="Images\50px-Chlorine.png" />
+    <Resource Include="Images\50px-Clay.png" />
+    <Resource Include="Images\50px-Coal.png" />
+    <Resource Include="Images\50px-Copper_Ore.png" />
+    <Resource Include="Images\50px-Dirt.png" />
+    <Resource Include="Images\50px-Electrum.png" />
+    <Resource Include="Images\50px-Fertilizer.png" />
+    <Resource Include="Images\50px-Gold_Amalgam.png" />
+    <Resource Include="Images\50px-Granite.png" />
+    <Resource Include="Images\50px-Hydrogen.png" />
+    <Resource Include="Images\50px-Ice.png" />
+    <Resource Include="Images\50px-Igneous_rock.png" />
+    <Resource Include="Images\50px-Iron_Ore.png" />
+    <Resource Include="Images\50px-Magma.png" />
+    <Resource Include="Images\50px-Mercury_Gas.png" />
+    <Resource Include="Images\50px-Neutronium.png" />
+    <Resource Include="Images\50px-Obsidian.png" />
+    <Resource Include="Images\50px-Oxygen-icon.png" />
+    <Resource Include="Images\50px-Oxylite.png" />
+    <Resource Include="Images\50px-Phosphorite.png" />
+    <Resource Include="Images\50px-Polluted_Dirt_Item.png" />
+    <Resource Include="Images\50px-Polluted_Ice.png" />
+    <Resource Include="Images\50px-Polluted_Oxygen.png" />
+    <Resource Include="Images\50px-Polluted_Water.png" />
+    <Resource Include="Images\50px-Pure_plastic.png" />
+    <Resource Include="Images\50px-Pyrite.png" />
+    <Resource Include="Images\50px-Sand.png" />
+    <Resource Include="Images\50px-Sand_stone.png" />
+    <Resource Include="Images\50px-Sedimentary_Rock.png" />
+    <Resource Include="Images\50px-Slime.png" />
+    <Resource Include="Images\50px-Snow.png" />
+    <Resource Include="Images\50px-Water-icon.png" />
+    <Resource Include="Images\50px-Wolframite.png" />
+    <Resource Include="Images\placeholder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

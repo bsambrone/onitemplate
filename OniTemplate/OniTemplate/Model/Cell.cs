@@ -12,8 +12,8 @@ namespace OniTemplate.Model
         [YamlMember(ApplyNamingConventions = false)]
         public int location_y { get; set; }
         public string DiseaseName { get; set; }
-        public int DiseaseCount { get; set; }
+        public int? DiseaseCount { get; set; }
         [YamlMember(ApplyNamingConventions = false)]
-        public bool preventFoWReveal { get; set; }
+        public bool? preventFoWReveal { get; set; }
     }
 }

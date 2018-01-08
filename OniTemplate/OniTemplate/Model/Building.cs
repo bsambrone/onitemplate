@@ -11,8 +11,8 @@ namespace OniTemplate.Model
         [YamlMember(ApplyNamingConventions = false)]
         public int location_y { get; set; }
         public string DiseaseName { get; set; }
-        public int DiseaseCount { get; set; }
-        public int Connections { get; set; }
+        public int? DiseaseCount { get; set; }
+        public int? Connections { get; set; }
         public string RotationOrientation { get; set; }
         public string Element { get; set; }
         public double Temperature { get; set; }

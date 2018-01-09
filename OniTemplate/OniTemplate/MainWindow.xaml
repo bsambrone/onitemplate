@@ -32,7 +32,7 @@
 
             <TreeView Name="PaletteTree" Grid.Column="0" Grid.Row="0" MouseMove="PaletteTree_OnMouseMove" PreviewMouseLeftButtonDown="PaletteTree_OnPreviewMouseLeftButtonDown">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type model:PaletteCollection}" ItemsSource="{Binding Items}">
+                    <HierarchicalDataTemplate DataType="{x:Type model:ElementCollection}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" />
                             <TextBlock Text=" [" Foreground="Blue" />
@@ -40,7 +40,7 @@
                             <TextBlock Text="]" Foreground="Blue" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type model:PaletteItem}">
+                    <DataTemplate DataType="{x:Type model:TileElement}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="64">
                             <Image Source="{Binding ImageUri, Converter={StaticResource ImagePathConverter}}"/>
                             <TextBlock Text="{Binding Name}" />

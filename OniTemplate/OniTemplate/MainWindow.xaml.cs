@@ -57,7 +57,7 @@ namespace OniTemplate
             // Get the selected item
             if (PaletteTree.SelectedItem != null)
             {
-                var item = PaletteTree.SelectedItem as PaletteItem;
+                var item = PaletteTree.SelectedItem as TileElement;
                 ViewModel.SelectedTileProperty.Element = item.Name;
             }
         }
@@ -77,7 +77,7 @@ namespace OniTemplate
                 var selected = treeView.SelectedItem;
 
                 // Find the data behind the TreeViewItem
-                var data = selected as PaletteItem;
+                var data = selected as TileElement;
                 if (data == null) return;
                 var dragObject = new DragElement();
                 dragObject.ImageUri = data.ImageUri;
@@ -114,9 +114,9 @@ namespace OniTemplate
                 CurrentColumn = gridPosition.Y;
 
                 var cell = mainGrid.Children.Cast<UIElement>().First(g => Grid.GetRow(g) == gridPosition.Y && Grid.GetColumn(g) == gridPosition.X) as Image;   
-                var newPaletteItem = new PaletteItem() { ImageUri = data.ImageUri, Name = data.Name, TileType = data.TileType };
+                var newPaletteItem = new TileElement() { ImageUri = data.ImageUri, Name = data.Name, TileType = data.TileType };
                 cell.DataContext = newPaletteItem;
-                Binding imageBinding = new Binding("PaletteItem.ImageUri");
+                Binding imageBinding = new Binding("TileElement.ImageUri");
                 imageBinding.Source = cell;
                 imageBinding.Mode = BindingMode.TwoWay;
                 imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
@@ -135,7 +135,7 @@ namespace OniTemplate
                     TemperatureKelvin = ViewModel.SelectedTileProperty.TemperatureKelvin,
                 };
                 
-                targetTemplateCell.PaletteItem = newPaletteItem;
+                targetTemplateCell.TileElement = newPaletteItem;
                 
             }
         }
@@ -158,12 +158,12 @@ namespace OniTemplate
                 MessageBox.Show("Please select an element");
                 return;
             }
-            var item = PaletteTree.SelectedItem as PaletteItem;
+            var item = PaletteTree.SelectedItem as TileElement;
 
             var cell = mainGrid.Children.Cast<UIElement>().First(g => Grid.GetRow(g) == gridPosition.Y && Grid.GetColumn(g) == gridPosition.X) as Image;
-            var newPaletteItem = new PaletteItem() { ImageUri = item.ImageUri, Name = item.Name, TileType = item.TileType };
+            var newPaletteItem = new TileElement() { ImageUri = item.ImageUri, Name = item.Name, TileType = item.TileType };
             cell.DataContext = newPaletteItem;
-            Binding imageBinding = new Binding("PaletteItem.ImageUri");
+            Binding imageBinding = new Binding("TileElement.ImageUri");
             imageBinding.Source = cell;
             imageBinding.Mode = BindingMode.TwoWay;
             imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
@@ -172,7 +172,7 @@ namespace OniTemplate
             cell.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + item.ImageUri));
 
             var targetTemplateCell = ViewModel.Cells.First(x => x.Column == gridPosition.X && x.Row == gridPosition.Y);
-            targetTemplateCell.PaletteItem = newPaletteItem;
+            targetTemplateCell.TileElement = newPaletteItem;
 
             // since all value types, copy those little guys
             targetTemplateCell.TileProperty = new TileProperty()
@@ -183,7 +183,7 @@ namespace OniTemplate
                 MassGrams = ViewModel.SelectedTileProperty.MassGrams,
                 TemperatureKelvin = ViewModel.SelectedTileProperty.TemperatureKelvin,
             };
-            targetTemplateCell.PaletteItem = newPaletteItem;
+            targetTemplateCell.TileElement = newPaletteItem;
 
         }
 
@@ -195,19 +195,19 @@ namespace OniTemplate
             template.Name = ViewModel.TemplateName ?? "undefined";
 
             // get the size
-            template.Info.Size.X = ViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null).Max(x => x.Column);
-            template.Info.Size.Y = ViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null).Max(x => x.Row);
-            if (ViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null).Min(x => x.Column) == 0) template.Info.Size.X++;
-            if (ViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null).Min(x => x.Row) == 0) template.Info.Size.Y++;
+            template.Info.Size.X = ViewModel.Cells.Where(x => x.TileElement.TileType != TileType.Null).Max(x => x.Column);
+            template.Info.Size.Y = ViewModel.Cells.Where(x => x.TileElement.TileType != TileType.Null).Max(x => x.Row);
+            if (ViewModel.Cells.Where(x => x.TileElement.TileType != TileType.Null).Min(x => x.Column) == 0) template.Info.Size.X++;
+            if (ViewModel.Cells.Where(x => x.TileElement.TileType != TileType.Null).Min(x => x.Row) == 0) template.Info.Size.Y++;
 
             // get list of cells that aren't null
-            var cells = ViewModel.Cells.Where(x => x.PaletteItem.TileType != TileType.Null);
+            var cells = ViewModel.Cells.Where(x => x.TileElement.TileType != TileType.Null);
             foreach (var cell in cells)
             {
                 var templateCell = new Cell();
                 templateCell.DiseaseCount = cell.TileProperty.DiseaseCount;
                 templateCell.DiseaseName = cell.TileProperty.DiseaseName;
-                templateCell.Element = ElementConverter.Convert(cell.PaletteItem.Name);
+                templateCell.Element = ElementConverter.Convert(cell.TileElement.Name);
                 templateCell.Mass = cell.TileProperty.MassGrams;
                 templateCell.Temperature = cell.TileProperty.TemperatureKelvin;
                 templateCell.location_x = cell.Column;

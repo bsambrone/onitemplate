@@ -6,12 +6,12 @@ namespace OniTemplate.Editor
     {
         public int Row { get; set; }
         public int Column { get; set; }
-        public PaletteItem PaletteItem { get; set; }
+        public TileElement TileElement { get; set; }
         public TileProperty TileProperty { get; set; }
 
         public TemplateCell()
         {
-            PaletteItem = PaletteItem.NullItem();
+            TileElement = TileElement.NullItem();
             TileProperty = new TileProperty();
         }
     }

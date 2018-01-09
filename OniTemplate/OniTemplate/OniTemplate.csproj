@@ -68,9 +68,10 @@
     <Compile Include="Editor\BorderGrid.cs" />
     <Compile Include="Editor\ImagePathConverter.cs" />
     <Compile Include="Editor\Model\DragElement.cs" />
-    <Compile Include="Editor\Model\PaletteCollection.cs" />
-    <Compile Include="Editor\Model\PaletteItem.cs" />
+    <Compile Include="Editor\Model\ElementCollection.cs" />
+    <Compile Include="Editor\Model\TileElement.cs" />
     <Compile Include="Editor\Model\EditorViewModel.cs" />
+    <Compile Include="Editor\Model\TileOtherEntity.cs" />
     <Compile Include="Editor\Model\TileProperty.cs" />
     <Compile Include="Editor\Model\TileType.cs" />
     <Compile Include="Editor\TemplateCell.cs" />

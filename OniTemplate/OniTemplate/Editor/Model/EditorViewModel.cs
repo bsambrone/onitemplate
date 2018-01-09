@@ -6,7 +6,7 @@ namespace OniTemplate.Editor.Model
 {
     public class EditorViewModel
     {
-        public ObservableCollection<PaletteCollection> PaletteCollections { get; set; }
+        public ObservableCollection<ElementCollection> PaletteCollections { get; set; }
         public TemplateCell[] Cells { get; set; }
         public string TemplateName { get; set; }
         public TileProperty SelectedTileProperty { get; set; }
@@ -15,97 +15,97 @@ namespace OniTemplate.Editor.Model
         public EditorViewModel()
         {
             SelectedTileProperty = TileProperty.NullTileProperty();
-            PaletteCollections = new ObservableCollection<PaletteCollection>();
+            PaletteCollections = new ObservableCollection<ElementCollection>();
 
-            var minerals = new PaletteCollection();
+            var minerals = new ElementCollection();
             minerals.Name = "Raw Minerals";
-            minerals.Items = new ObservableCollection<PaletteItem>();
-            minerals.Items.Add(new PaletteItem { Name = "Abyssalite", ImageUri = "50px-Abyssalite.png", TileType = TileType.SolidElement});
-            minerals.Items.Add(new PaletteItem { Name = "Diamond", ImageUri = "placeholder.png", TileType = TileType.SolidElement });
-            minerals.Items.Add(new PaletteItem { Name = "Granite", ImageUri = "50px-Granite.png", TileType = TileType.SolidElement });
-            minerals.Items.Add(new PaletteItem { Name = "Igneous Rock", ImageUri = "50px-Igneous_rock.png", TileType = TileType.SolidElement });
-            minerals.Items.Add(new PaletteItem { Name = "Obsidian", ImageUri = "50px-Obsidian.png", TileType = TileType.SolidElement });
-            minerals.Items.Add(new PaletteItem { Name = "Sandstone", ImageUri = "50px-Sand_stone.png", TileType = TileType.SolidElement });
-            minerals.Items.Add(new PaletteItem { Name = "Sedimentary Rock", ImageUri = "50px-Sedimentary_Rock.png", TileType = TileType.SolidElement });
+            minerals.Items = new ObservableCollection<TileElement>();
+            minerals.Items.Add(new TileElement { Name = "Abyssalite", ImageUri = "50px-Abyssalite.png", TileType = TileType.SolidElement});
+            minerals.Items.Add(new TileElement { Name = "Diamond", ImageUri = "placeholder.png", TileType = TileType.SolidElement });
+            minerals.Items.Add(new TileElement { Name = "Granite", ImageUri = "50px-Granite.png", TileType = TileType.SolidElement });
+            minerals.Items.Add(new TileElement { Name = "Igneous Rock", ImageUri = "50px-Igneous_rock.png", TileType = TileType.SolidElement });
+            minerals.Items.Add(new TileElement { Name = "Obsidian", ImageUri = "50px-Obsidian.png", TileType = TileType.SolidElement });
+            minerals.Items.Add(new TileElement { Name = "Sandstone", ImageUri = "50px-Sand_stone.png", TileType = TileType.SolidElement });
+            minerals.Items.Add(new TileElement { Name = "Sedimentary Rock", ImageUri = "50px-Sedimentary_Rock.png", TileType = TileType.SolidElement });
 
-            var metals = new PaletteCollection();
+            var metals = new ElementCollection();
             metals.Name = "Raw Metals";
-            metals.Items = new ObservableCollection<PaletteItem>();
-            metals.Items.Add(new PaletteItem { Name = "Copper Ore", ImageUri = "50px-Copper_Ore.png", TileType = TileType.SolidElement });
-            metals.Items.Add(new PaletteItem { Name = "Electrum", ImageUri = "50px-Electrum.png", TileType = TileType.SolidElement });
-            metals.Items.Add(new PaletteItem { Name = "Gold Amalgam", ImageUri = "50px-Gold_Amalgam.png", TileType = TileType.SolidElement });
-            metals.Items.Add(new PaletteItem { Name = "Iron Ore", ImageUri = "50px-Iron_Ore.png", TileType = TileType.SolidElement });
-            metals.Items.Add(new PaletteItem { Name = "Pyrite", ImageUri = "50px-Pyrite.png", TileType = TileType.SolidElement });
-            metals.Items.Add(new PaletteItem { Name = "Wolframite", ImageUri = "50px-Wolframite.png", TileType = TileType.SolidElement });
+            metals.Items = new ObservableCollection<TileElement>();
+            metals.Items.Add(new TileElement { Name = "Copper Ore", ImageUri = "50px-Copper_Ore.png", TileType = TileType.SolidElement });
+            metals.Items.Add(new TileElement { Name = "Electrum", ImageUri = "50px-Electrum.png", TileType = TileType.SolidElement });
+            metals.Items.Add(new TileElement { Name = "Gold Amalgam", ImageUri = "50px-Gold_Amalgam.png", TileType = TileType.SolidElement });
+            metals.Items.Add(new TileElement { Name = "Iron Ore", ImageUri = "50px-Iron_Ore.png", TileType = TileType.SolidElement });
+            metals.Items.Add(new TileElement { Name = "Pyrite", ImageUri = "50px-Pyrite.png", TileType = TileType.SolidElement });
+            metals.Items.Add(new TileElement { Name = "Wolframite", ImageUri = "50px-Wolframite.png", TileType = TileType.SolidElement });
 
-            var agri = new PaletteCollection();
+            var agri = new ElementCollection();
             agri.Name = "Agricultural";
-            agri.Items = new ObservableCollection<PaletteItem>();
-            agri.Items.Add(new PaletteItem { Name = "Fertilizer", ImageUri = "50px-Fertilizer.png", TileType = TileType.SolidElement });
-            agri.Items.Add(new PaletteItem { Name = "Phosphorite", ImageUri = "50px-Phosphorite.png", TileType = TileType.SolidElement });
+            agri.Items = new ObservableCollection<TileElement>();
+            agri.Items.Add(new TileElement { Name = "Fertilizer", ImageUri = "50px-Fertilizer.png", TileType = TileType.SolidElement });
+            agri.Items.Add(new TileElement { Name = "Phosphorite", ImageUri = "50px-Phosphorite.png", TileType = TileType.SolidElement });
 
-            var soil = new PaletteCollection();
+            var soil = new ElementCollection();
             soil.Name = "Cultivable Soil";
-            soil.Items = new ObservableCollection<PaletteItem>();
-            soil.Items.Add(new PaletteItem { Name = "Dirt", ImageUri = "50px-Dirt.png", TileType = TileType.SolidElement });
-            soil.Items.Add(new PaletteItem { Name = "Clay", ImageUri = "50px-Clay.png", TileType = TileType.SolidElement });
+            soil.Items = new ObservableCollection<TileElement>();
+            soil.Items.Add(new TileElement { Name = "Dirt", ImageUri = "50px-Dirt.png", TileType = TileType.SolidElement });
+            soil.Items.Add(new TileElement { Name = "Clay", ImageUri = "50px-Clay.png", TileType = TileType.SolidElement });
 
-            var organic = new PaletteCollection();
+            var organic = new ElementCollection();
             organic.Name = "Organic";
-            organic.Items = new ObservableCollection<PaletteItem>();
-            organic.Items.Add(new PaletteItem { Name = "Algae", ImageUri = "50px-Algae.png", TileType = TileType.SolidElement });
-            organic.Items.Add(new PaletteItem { Name = "Polluted Dirt", ImageUri = "50px-Polluted_Dirt_Item.png", TileType = TileType.SolidElement });
-            organic.Items.Add(new PaletteItem { Name = "Slime", ImageUri = "50px-Slime.png", TileType = TileType.SolidElement });
+            organic.Items = new ObservableCollection<TileElement>();
+            organic.Items.Add(new TileElement { Name = "Algae", ImageUri = "50px-Algae.png", TileType = TileType.SolidElement });
+            organic.Items.Add(new TileElement { Name = "Polluted Dirt", ImageUri = "50px-Polluted_Dirt_Item.png", TileType = TileType.SolidElement });
+            organic.Items.Add(new TileElement { Name = "Slime", ImageUri = "50px-Slime.png", TileType = TileType.SolidElement });
 
-            var consumables = new PaletteCollection();
+            var consumables = new ElementCollection();
             consumables.Name = "Consumable Ores";
-            consumables.Items = new ObservableCollection<PaletteItem>();
-            consumables.Items.Add(new PaletteItem { Name = "Coal", ImageUri = "50px-Coal.png", TileType = TileType.SolidElement });
-            consumables.Items.Add(new PaletteItem { Name = "Oxylite", ImageUri = "50px-Oxylite.png", TileType = TileType.SolidElement });
-            consumables.Items.Add(new PaletteItem { Name = "Bleach Stone", ImageUri = "50px-Bleach_Stone.png", TileType = TileType.SolidElement });
+            consumables.Items = new ObservableCollection<TileElement>();
+            consumables.Items.Add(new TileElement { Name = "Coal", ImageUri = "50px-Coal.png", TileType = TileType.SolidElement });
+            consumables.Items.Add(new TileElement { Name = "Oxylite", ImageUri = "50px-Oxylite.png", TileType = TileType.SolidElement });
+            consumables.Items.Add(new TileElement { Name = "Bleach Stone", ImageUri = "50px-Bleach_Stone.png", TileType = TileType.SolidElement });
 
-            var filtration = new PaletteCollection();
+            var filtration = new ElementCollection();
             filtration.Name = "Filtration Medium";
-            filtration.Items = new ObservableCollection<PaletteItem>();
-            filtration.Items.Add(new PaletteItem { Name = "Sand", ImageUri = "50px-Sand.png", TileType = TileType.SolidElement });
+            filtration.Items = new ObservableCollection<TileElement>();
+            filtration.Items.Add(new TileElement { Name = "Sand", ImageUri = "50px-Sand.png", TileType = TileType.SolidElement });
 
-            var liquify = new PaletteCollection();
+            var liquify = new ElementCollection();
             liquify.Name = "Liquifiable";
-            liquify.Items = new ObservableCollection<PaletteItem>();
-            liquify.Items.Add(new PaletteItem { Name = "Ice", ImageUri = "50px-Ice.png", TileType = TileType.SolidElement });
-            liquify.Items.Add(new PaletteItem { Name = "Polluted Ice", ImageUri = "50px-Polluted_Ice.png", TileType = TileType.SolidElement });
-            liquify.Items.Add(new PaletteItem { Name = "Snow", ImageUri = "50px-Snow.png", TileType = TileType.SolidElement });
+            liquify.Items = new ObservableCollection<TileElement>();
+            liquify.Items.Add(new TileElement { Name = "Ice", ImageUri = "50px-Ice.png", TileType = TileType.SolidElement });
+            liquify.Items.Add(new TileElement { Name = "Polluted Ice", ImageUri = "50px-Polluted_Ice.png", TileType = TileType.SolidElement });
+            liquify.Items.Add(new TileElement { Name = "Snow", ImageUri = "50px-Snow.png", TileType = TileType.SolidElement });
 
-            var special = new PaletteCollection();
+            var special = new ElementCollection();
             special.Name = "Special";
-            special.Items = new ObservableCollection<PaletteItem>();
-            special.Items.Add(new PaletteItem { Name = "Neutronium", ImageUri = "50px-Neutronium.png", TileType = TileType.SolidElement });
-            special.Items.Add(new PaletteItem { Name = "Plastic", ImageUri = "50px-Pure_plastic.png", TileType = TileType.SolidElement });
+            special.Items = new ObservableCollection<TileElement>();
+            special.Items.Add(new TileElement { Name = "Neutronium", ImageUri = "50px-Neutronium.png", TileType = TileType.SolidElement });
+            special.Items.Add(new TileElement { Name = "Plastic", ImageUri = "50px-Pure_plastic.png", TileType = TileType.SolidElement });
 
-            var liquids = new PaletteCollection();
+            var liquids = new ElementCollection();
             liquids.Name = "Liquids";
-            liquids.Items = new ObservableCollection<PaletteItem>();
-            liquids.Items.Add(new PaletteItem { Name = "Crude Oil", ImageUri = "placeholder.png", TileType = TileType.Liquid });
-            liquids.Items.Add(new PaletteItem { Name = "Water", ImageUri = "50px-Water-icon.png", TileType = TileType.Liquid });
-            liquids.Items.Add(new PaletteItem { Name = "Polluted Water", ImageUri = "50px-Polluted_Water.png", TileType = TileType.Liquid });
-            liquids.Items.Add(new PaletteItem { Name = "Magma", ImageUri = "50px-Magma.png", TileType = TileType.Liquid });
+            liquids.Items = new ObservableCollection<TileElement>();
+            liquids.Items.Add(new TileElement { Name = "Crude Oil", ImageUri = "placeholder.png", TileType = TileType.Liquid });
+            liquids.Items.Add(new TileElement { Name = "Water", ImageUri = "50px-Water-icon.png", TileType = TileType.Liquid });
+            liquids.Items.Add(new TileElement { Name = "Polluted Water", ImageUri = "50px-Polluted_Water.png", TileType = TileType.Liquid });
+            liquids.Items.Add(new TileElement { Name = "Magma", ImageUri = "50px-Magma.png", TileType = TileType.Liquid });
 
-            var breathable = new PaletteCollection();
+            var breathable = new ElementCollection();
             breathable.Name = "Breathable Gases";
-            breathable.Items = new ObservableCollection<PaletteItem>();
-            breathable.Items.Add(new PaletteItem { Name = "Oxygen", ImageUri = "50px-Oxygen-icon.png", TileType = TileType.GasElement });
-            breathable.Items.Add(new PaletteItem { Name = "Polluted Oxygen", ImageUri = "50px-Polluted_Oxygen.png", TileType = TileType.GasElement });
+            breathable.Items = new ObservableCollection<TileElement>();
+            breathable.Items.Add(new TileElement { Name = "Oxygen", ImageUri = "50px-Oxygen-icon.png", TileType = TileType.GasElement });
+            breathable.Items.Add(new TileElement { Name = "Polluted Oxygen", ImageUri = "50px-Polluted_Oxygen.png", TileType = TileType.GasElement });
 
-            var unbreathable = new PaletteCollection();
+            var unbreathable = new ElementCollection();
             unbreathable.Name = "Unbreathable Gases";
-            unbreathable.Items = new ObservableCollection<PaletteItem>();
-            unbreathable.Items.Add(new PaletteItem { Name = "Carbon Dioxide", ImageUri = "50px-Carbon_Dioxide.png", TileType = TileType.GasElement });
-            unbreathable.Items.Add(new PaletteItem { Name = "Chlorine", ImageUri = "50px-Chlorine.png", TileType = TileType.GasElement });
-            unbreathable.Items.Add(new PaletteItem { Name = "Hydrogen", ImageUri = "50px-Hydrogen.png", TileType = TileType.GasElement });
-            unbreathable.Items.Add(new PaletteItem { Name = "Mercury Gas", ImageUri = "50px-Mercury_Gas.png", TileType = TileType.GasElement });
-            unbreathable.Items.Add(new PaletteItem { Name = "Natural Gas", ImageUri = "placeholder.png", TileType = TileType.GasElement });
-            unbreathable.Items.Add(new PaletteItem { Name = "Steam", ImageUri = "placeholder.png", TileType = TileType.GasElement });
-            unbreathable.Items.Add(new PaletteItem { Name = "Vacuum", ImageUri = "placeholder.png", TileType = TileType.GasElement });
+            unbreathable.Items = new ObservableCollection<TileElement>();
+            unbreathable.Items.Add(new TileElement { Name = "Carbon Dioxide", ImageUri = "50px-Carbon_Dioxide.png", TileType = TileType.GasElement });
+            unbreathable.Items.Add(new TileElement { Name = "Chlorine", ImageUri = "50px-Chlorine.png", TileType = TileType.GasElement });
+            unbreathable.Items.Add(new TileElement { Name = "Hydrogen", ImageUri = "50px-Hydrogen.png", TileType = TileType.GasElement });
+            unbreathable.Items.Add(new TileElement { Name = "Mercury Gas", ImageUri = "50px-Mercury_Gas.png", TileType = TileType.GasElement });
+            unbreathable.Items.Add(new TileElement { Name = "Natural Gas", ImageUri = "placeholder.png", TileType = TileType.GasElement });
+            unbreathable.Items.Add(new TileElement { Name = "Steam", ImageUri = "placeholder.png", TileType = TileType.GasElement });
+            unbreathable.Items.Add(new TileElement { Name = "Vacuum", ImageUri = "placeholder.png", TileType = TileType.GasElement });
 
 
             PaletteCollections.Add(minerals);
@@ -131,7 +131,7 @@ namespace OniTemplate.Editor.Model
                 for (int y = 0; y < 16; y++)
                 {
                     var cell = new TemplateCell();
-                    cell.PaletteItem = PaletteItem.NullItem();
+                    cell.TileElement = TileElement.NullItem();
                     cell.Row = x;
                     cell.Column = y;
                     Cells[iterator] = cell;
@@ -141,7 +141,7 @@ namespace OniTemplate.Editor.Model
                     Grid.SetRow(image, x);
                     Grid.SetColumn(image, y);
 
-                    Binding imageBinding = new Binding("PaletteItem.ImageUri");
+                    Binding imageBinding = new Binding("TileElement.ImageUri");
                     imageBinding.Source = cell;                    
                     imageBinding.Mode = BindingMode.TwoWay;
                     imageBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;

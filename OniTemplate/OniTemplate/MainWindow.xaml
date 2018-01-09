@@ -10,8 +10,9 @@
         Title="MainWindow" Height="768" Width="1024" WindowState="Maximized">
     <Window.Resources>
         <editor:ImagePathConverter x:Key="ImagePathConverter"/>
+        <model:EditorViewModel x:Key="ViewModel"/>
     </Window.Resources>
-    <Grid>
+    <Grid DataContext="{StaticResource ViewModel}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="8*"/>
@@ -48,11 +49,25 @@
                 </TreeView.Resources>
             </TreeView>
 
-            <TextBlock Grid.Column="0" Grid.Row="1">property window</TextBlock>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <Label>Temperature</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center">K</Label>
+                        <TextBox Text="{Binding SelectedTileProperty.TemperatureKelvin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <Label VerticalAlignment="Center">C</Label>
+                        <TextBox Text="{Binding SelectedTileProperty.TemperatureCelcius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
+                        <Label VerticalAlignment="Center">F</Label>
+                        <TextBox Text="{Binding SelectedTileProperty.TemperatureFarenheight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Label>Mass (grams)</Label>
+                    <TextBox Text="{Binding SelectedTileProperty.MassGrams, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  DragEnter="MainGrid_OnDragEnter" Drop="MainGrid_OnDrop" AllowDrop="True">
-                <editor:BorderGrid x:Name="MainGrid" MaxHeight="1024" MaxWidth="1024" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  DragEnter="MainGrid_OnDragEnter" Drop="MainGrid_OnDrop" AllowDrop="True" PreviewMouseLeftButtonDown="MainGrid_OnPreviewMouseLeftButtonDown">
+                <editor:BorderGrid x:Name="MainGrid" MaxHeight="800" MaxWidth="800" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <editor:BorderGrid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="50" />

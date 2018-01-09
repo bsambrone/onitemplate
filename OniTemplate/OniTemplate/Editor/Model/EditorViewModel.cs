@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Media.Imaging;
 
 namespace OniTemplate.Editor.Model
 {
@@ -16,16 +9,19 @@ namespace OniTemplate.Editor.Model
         public ObservableCollection<PaletteCollection> PaletteCollections { get; set; }
         public TemplateCell[] Cells { get; set; }
         public string TemplateName { get; set; }
+        public TileProperty SelectedTileProperty { get; set; }
 
         // build our palette in the default ctor. this needs to go into configuration later.
         public EditorViewModel()
         {
+            SelectedTileProperty = TileProperty.NullTileProperty();
             PaletteCollections = new ObservableCollection<PaletteCollection>();
 
             var minerals = new PaletteCollection();
             minerals.Name = "Raw Minerals";
             minerals.Items = new ObservableCollection<PaletteItem>();
             minerals.Items.Add(new PaletteItem { Name = "Abyssalite", ImageUri = "50px-Abyssalite.png", TileType = TileType.SolidElement});
+            minerals.Items.Add(new PaletteItem { Name = "Diamond", ImageUri = "placeholder.png", TileType = TileType.SolidElement });
             minerals.Items.Add(new PaletteItem { Name = "Granite", ImageUri = "50px-Granite.png", TileType = TileType.SolidElement });
             minerals.Items.Add(new PaletteItem { Name = "Igneous Rock", ImageUri = "50px-Igneous_rock.png", TileType = TileType.SolidElement });
             minerals.Items.Add(new PaletteItem { Name = "Obsidian", ImageUri = "50px-Obsidian.png", TileType = TileType.SolidElement });
@@ -89,6 +85,7 @@ namespace OniTemplate.Editor.Model
             var liquids = new PaletteCollection();
             liquids.Name = "Liquids";
             liquids.Items = new ObservableCollection<PaletteItem>();
+            liquids.Items.Add(new PaletteItem { Name = "Crude Oil", ImageUri = "placeholder.png", TileType = TileType.Liquid });
             liquids.Items.Add(new PaletteItem { Name = "Water", ImageUri = "50px-Water-icon.png", TileType = TileType.Liquid });
             liquids.Items.Add(new PaletteItem { Name = "Polluted Water", ImageUri = "50px-Polluted_Water.png", TileType = TileType.Liquid });
             liquids.Items.Add(new PaletteItem { Name = "Magma", ImageUri = "50px-Magma.png", TileType = TileType.Liquid });
@@ -122,7 +119,7 @@ namespace OniTemplate.Editor.Model
             PaletteCollections.Add(special);
             PaletteCollections.Add(liquids);
             PaletteCollections.Add(breathable);
-            PaletteCollections.Add(unbreathable);
+            PaletteCollections.Add(unbreathable);            
         }
 
         public void ResetCells(BorderGrid grid)

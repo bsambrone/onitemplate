@@ -71,6 +71,7 @@
     <Compile Include="Editor\Model\PaletteCollection.cs" />
     <Compile Include="Editor\Model\PaletteItem.cs" />
     <Compile Include="Editor\Model\EditorViewModel.cs" />
+    <Compile Include="Editor\Model\TileProperty.cs" />
     <Compile Include="Editor\Model\TileType.cs" />
     <Compile Include="Editor\TemplateCell.cs" />
     <Compile Include="Extensions\GridExtensions.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Model\Template.cs" />
     <Compile Include="Model\OtherEntity.cs" />
     <Compile Include="Model\Pickupable.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

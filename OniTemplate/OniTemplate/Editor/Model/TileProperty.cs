@@ -64,14 +64,14 @@ namespace OniTemplate.Editor.Model
             }
         }
 
-        private double _massGrams;
-        public double MassGrams
+        private double _massKiloGrams;
+        public double MassKiloGrams
         {
-            get => _massGrams;
+            get => _massKiloGrams;
             set
             {
-                _massGrams = value;
-                OnPropertyChanged(nameof(MassGrams));
+                _massKiloGrams = value;
+                OnPropertyChanged(nameof(MassKiloGrams));
             }
         }
 
@@ -93,14 +93,14 @@ namespace OniTemplate.Editor.Model
             set
             {
                 _maturity = value;
-                OnPropertyChanged(nameof(MassGrams));
+                OnPropertyChanged(nameof(MassKiloGrams));
             }
         }
 
         public TileProperty()
         {
             TemperatureKelvin = 300;
-            MassGrams = 1000;
+            MassKiloGrams = 1000;
             DiseaseCount = null;
             DiseaseName = null;
             Maturity = 1;

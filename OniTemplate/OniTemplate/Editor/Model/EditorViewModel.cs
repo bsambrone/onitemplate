@@ -26,7 +26,7 @@ namespace OniTemplate.Editor.Model
             SelectedTileEntity.TileProperty = new TileProperty()
             {
                 TemperatureKelvin = 300,
-                MassGrams = 1000,
+                MassKiloGrams = 1000,
                 DiseaseCount = null,
                 DiseaseName = null,
                 HitPoints =  25,

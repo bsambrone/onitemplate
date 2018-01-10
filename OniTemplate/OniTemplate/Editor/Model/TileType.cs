@@ -5,6 +5,7 @@
         SolidElement,
         GasElement,
         Creature,
+        Plant,
         Null,
         Liquid
     }

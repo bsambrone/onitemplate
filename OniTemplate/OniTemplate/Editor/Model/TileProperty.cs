@@ -7,8 +7,6 @@ namespace OniTemplate.Editor.Model
 {
     public class TileProperty : INotifyPropertyChanged
     {
-        public string Element { get; set; }
-
         private double _kelvin;
         public double TemperatureKelvin
         {
@@ -77,15 +75,36 @@ namespace OniTemplate.Editor.Model
             }
         }
 
-        public static TileProperty NullTileProperty()
+        private double _hitpoints;
+        public double HitPoints
         {
-            var prop = new TileProperty();
-            prop.Element = "null";
-            prop.TemperatureKelvin = 300;
-            prop.MassGrams = 1000;
-            prop.DiseaseCount = null;
-            prop.DiseaseName = null;
-            return prop;
+            get => _hitpoints;
+            set
+            {
+                _hitpoints = value;
+                OnPropertyChanged(nameof(HitPoints));
+            }
+        }
+
+        private double _maturity;
+        public double Maturity
+        {
+            get => _maturity;
+            set
+            {
+                _maturity = value;
+                OnPropertyChanged(nameof(MassGrams));
+            }
+        }
+
+        public TileProperty()
+        {
+            TemperatureKelvin = 300;
+            MassGrams = 1000;
+            DiseaseCount = null;
+            DiseaseName = null;
+            Maturity = 1;
+            HitPoints = 25;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

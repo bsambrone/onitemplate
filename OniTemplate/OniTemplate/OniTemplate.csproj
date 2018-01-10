@@ -67,13 +67,17 @@
     </Compile>
     <Compile Include="Editor\BorderGrid.cs" />
     <Compile Include="Editor\ImagePathConverter.cs" />
-    <Compile Include="Editor\Model\DragElement.cs" />
-    <Compile Include="Editor\Model\PaletteCollection.cs" />
-    <Compile Include="Editor\Model\PaletteItem.cs" />
+    <Compile Include="Editor\Model\ElementType.cs" />
+    <Compile Include="Editor\Model\PropertyVisibility.cs" />
+    <Compile Include="Editor\Model\TileCollection.cs" />
+    <Compile Include="Editor\Model\EntityType.cs" />
+    <Compile Include="Editor\Model\TileEntity.cs" />
     <Compile Include="Editor\Model\EditorViewModel.cs" />
+    <Compile Include="Editor\Model\TileProperty.cs" />
     <Compile Include="Editor\Model\TileType.cs" />
-    <Compile Include="Editor\TemplateCell.cs" />
+    <Compile Include="Editor\Model\GridCell.cs" />
     <Compile Include="Extensions\GridExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TemperatureConverters.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -94,6 +98,7 @@
     <Compile Include="Model\Template.cs" />
     <Compile Include="Model\OtherEntity.cs" />
     <Compile Include="Model\Pickupable.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -169,6 +174,12 @@
     <Resource Include="Images\50px-Water-icon.png" />
     <Resource Include="Images\50px-Wolframite.png" />
     <Resource Include="Images\placeholder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\100px-Hatch.png" />
+    <Resource Include="Images\100px-Puft.png" />
+    <Resource Include="Images\100px-Slickster.png" />
+    <Resource Include="Images\MORB.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

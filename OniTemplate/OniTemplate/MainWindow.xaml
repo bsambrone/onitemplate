@@ -10,8 +10,9 @@
         Title="MainWindow" Height="768" Width="1024" WindowState="Maximized">
     <Window.Resources>
         <editor:ImagePathConverter x:Key="ImagePathConverter"/>
+        <model:EditorViewModel x:Key="ViewModel"/>
     </Window.Resources>
-    <Grid>
+    <Grid DataContext="{StaticResource ViewModel}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="8*"/>
@@ -29,9 +30,10 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
 
-            <TreeView Name="PaletteTree" Grid.Column="0" Grid.Row="0" MouseMove="PaletteTree_OnMouseMove" PreviewMouseLeftButtonDown="PaletteTree_OnPreviewMouseLeftButtonDown">
+            <TreeView Name="PaletteTree" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding TileCollections}" PreviewMouseLeftButtonDown="PaletteTree_OnPreviewMouseLeftButtonDown"
+                      MouseMove="PaletteTree_OnMouseMove" SelectedItemChanged="PaletteTree_OnSelectedItemChanged">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type model:PaletteCollection}" ItemsSource="{Binding Items}">
+                    <HierarchicalDataTemplate DataType="{x:Type model:TileCollection}" ItemsSource="{Binding Items}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" />
                             <TextBlock Text=" [" Foreground="Blue" />
@@ -39,20 +41,47 @@
                             <TextBlock Text="]" Foreground="Blue" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-                    <DataTemplate DataType="{x:Type model:PaletteItem}">
+                    <DataTemplate DataType="{x:Type model:TileEntity}">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch" Height="64">
-                            <Image Source="{Binding ImageUri, Converter={StaticResource ImagePathConverter}}"/>
-                            <TextBlock Text="{Binding Name}" />
+                            <Image Source="{Binding ImageUri, Converter={StaticResource ImagePathConverter}}" />
+                            <TextBlock Text="{Binding DisplayName}" />
                         </StackPanel>
                     </DataTemplate>
                 </TreeView.Resources>
             </TreeView>
 
-            <TextBlock Grid.Column="0" Grid.Row="1">property window</TextBlock>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="1">
+                <StackPanel Orientation="Vertical">
+                    <Label>Temperature</Label>
+                    <StackPanel Orientation="Horizontal">
+                        <Label VerticalAlignment="Center">K</Label>
+                        <TextBox Text="{Binding TileProperty.TemperatureKelvin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <Label VerticalAlignment="Center">C</Label>
+                        <TextBox Text="{Binding TileProperty.TemperatureCelcius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
+                        <Label VerticalAlignment="Center">F</Label>
+                        <TextBox Text="{Binding TileProperty.TemperatureFarenheight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <Label Visibility="{Binding PropertyVisibility.ShowMass}">Mass (grams)</Label>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowMass}" Text="{Binding TileProperty.MassGrams, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+                    <Label Visibility="Hidden">Disease (type)</Label>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowDisease}" Text="{Binding TileProperty.DiseaseName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+                    <Label Visibility="Hidden">Disease (count)</Label>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowDisease}" Text="{Binding TileProperty.DiseaseCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+                    <Label Visibility="{Binding PropertyVisibility.ShowMaturation}">Maturation (cycles)</Label>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowMaturation}" Text="{Binding TileProperty.Maturity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+
+                    <Label Visibility="{Binding PropertyVisibility.ShowHitpoints}">Hitpoints</Label>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowHitpoints}" Text="{Binding TileProperty.HitPoints, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                </StackPanel>
+            </StackPanel>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="0">
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  DragEnter="MainGrid_OnDragEnter" Drop="MainGrid_OnDrop" AllowDrop="True">
-                <editor:BorderGrid x:Name="MainGrid" MaxHeight="1024" MaxWidth="1024" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  DragEnter="MainGrid_OnDragEnter" Drop="MainGrid_OnDrop" AllowDrop="True" PreviewMouseLeftButtonDown="MainGrid_OnPreviewMouseLeftButtonDown">
+                <editor:BorderGrid x:Name="MainGrid" MaxHeight="800" MaxWidth="800" VerticalAlignment="Top" HorizontalAlignment="Left">
                     <editor:BorderGrid.ColumnDefinitions>
                         <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="50" />
@@ -108,8 +137,8 @@
             <Button Grid.Column="2" Name="SaveTemplate">Save</Button>
             <Button Grid.Column="3" Name="SaveAsTemplate" Click="SaveAsTemplate_OnClick">Save As New Template</Button>
             <StackPanel Grid.Column="4" Orientation="Vertical">
-                <TextBlock Text="Template Name:"/>
-                <TextBox Text="{Binding EditorViewModel.TemplateName}"/>
+                <TextBlock Text="Template DisplayName:"/>
+                <TextBox Text="{Binding TemplateName}"/>
             </StackPanel>
         </Grid>
         

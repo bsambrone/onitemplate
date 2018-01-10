@@ -16,6 +16,7 @@ namespace OniTemplate.Test
         public void DeserializeExistingFileTest()
         {
             var distinctElements = new List<string>();
+            var distinctOEids = new List<string>();
 
             var baseDir =
                 @"F:\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\StreamingAssets\templates\poi";
@@ -59,6 +60,10 @@ namespace OniTemplate.Test
                     {
                         distinctElements.Add(item.Element);
                     }
+                    if (!distinctOEids.Contains(item.Id))
+                    {
+                        distinctOEids.Add(item.Id);
+                    }
                 }
             }
 
@@ -68,6 +73,12 @@ namespace OniTemplate.Test
                 builder.AppendLine(element);
             }
             File.WriteAllText(@"c:\temp\elements.txt",builder.ToString());
+            builder = new StringBuilder();
+            foreach (var element in distinctOEids.OrderBy(x => x))
+            {
+                builder.AppendLine(element);
+            }
+            File.WriteAllText(@"c:\temp\otherentities.txt", builder.ToString());
         }
     }
 }

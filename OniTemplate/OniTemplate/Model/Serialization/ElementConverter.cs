@@ -1,51 +1,54 @@
 ﻿using System;
+using OniTemplate.Editor.Model;
 
 namespace OniTemplate.Model.Serialization
 {
     public static class ElementConverter
     {
-        public static string Convert(string element)
+        public static string Convert(ElementType element)
         {
-            if (element == "Abyssalite") throw new NotImplementedException();
-            if (element == "Granite") return "Granite";
-            if (element == "Igneous Rock") return "IgneousRock";
-            if (element == "Obsidian") return "Obsidian";
-            if (element == "Sandstone") return "SandStone";
-            if (element == "Sedimentary Rock") return "SedimentaryRock";
-            if (element == "Copper Ore") return "Cuprite";
-            if (element == "Electrum") throw new NotImplementedException();
-            if (element == "Gold Amalgam") return "GoldAmalgam";
-            if (element == "Iron Ore") return "IronOre";
-            if (element == "Pyrite") throw new NotImplementedException();
-            if (element == "Wolframite") return "Wolframite";
-            if (element == "Fertilizer") return "";
-            if (element == "Phosphorite") return "Phosphorite";
-            if (element == "Dirt") throw new NotImplementedException();
-            if (element == "Clay") return "Clay";
-            if (element == "Algae") return "Algae";
-            if (element == "Polluted Dirt") return "";
-            if (element == "Slime") return "SlimeMold";
-            if (element == "Coal") throw new NotImplementedException();
-            if (element == "Oxylite") return "OxyRock";
-            if (element == "Bleach Stone") return "BleachStone";
-            if (element == "Sand") return "Sand";
-            if (element == "Ice") return "Ice";
-            if (element == "Polluted Ice") return "DirtyIce";
-            if (element == "Snow") return "Snow";
-            if (element == "Neutronium") return "Unobtanium";
-            if (element == "Plastic") throw new NotImplementedException();
-            if (element == "Water") return "Water";
-            if (element == "Polluted Water") return "DirtyWater";
-            if (element == "Magma") throw new NotImplementedException();
-            if (element == "Oxygen") return "Oxygen";
-            if (element == "Polluted Oxygen") return "ContaminatedOxygen";
-            if (element == "Carbon Dioxide") return "CarbonDioxide";
-            if (element == "Chlorine") return "ChlorineGas";
-            if (element == "Hydrogen") return "Hydrogen";
-            if (element == "Mercury Gas") throw new NotImplementedException();
-            if (element == "Natural Gas") return "Methane";
-            if (element == "Steam") return "Steam";
-            if (element == "Vacuum") return "Vacuum";
+            if (element == ElementType.Abyssalite) throw new NotImplementedException("Abyssalite not supported");
+            if (element == ElementType.Diamond) return "Diamond";
+            if (element == ElementType.Granite) return "Granite";
+            if (element == ElementType.IgneousRock) return "IgneousRock";
+            if (element == ElementType.Obsidian) return "Obsidian";
+            if (element == ElementType.Sandstone) return "SandStone";
+            if (element == ElementType.SedimentaryRock) return "SedimentaryRock";
+            if (element == ElementType.CopperOre) return "Cuprite";
+            if (element == ElementType.Electrum) return "Electrum";
+            if (element == ElementType.GoldAmalgam) return "GoldAmalgam";
+            if (element == ElementType.IronOre) return "IronOre";
+            if (element == ElementType.Pyrite) return "FoolsGold";
+            if (element == ElementType.Wolframite) return "Wolframite";
+            if (element == ElementType.Fertilizer) return "";
+            if (element == ElementType.Phosphorite) return "Phosphorite";
+            if (element == ElementType.Dirt) return "Dirt";
+            if (element == ElementType.Clay) return "Clay";
+            if (element == ElementType.Algae) return "Algae";
+            if (element == ElementType.PollutedDirt) return "";
+            if (element == ElementType.Slime) return "SlimeMold";
+            if (element == ElementType.Coal) throw new NotImplementedException("Coal not supported");
+            if (element == ElementType.Oxylite) return "OxyRock";
+            if (element == ElementType.BleachStone) return "BleachStone";
+            if (element == ElementType.Sand) return "Sand";
+            if (element == ElementType.Ice) return "Ice";
+            if (element == ElementType.PollutedIce) return "DirtyIce";
+            if (element == ElementType.Snow) return "Snow";
+            if (element == ElementType.Neutronium) return "Unobtanium";
+            if (element == ElementType.Plastic) throw new NotImplementedException("Plastic not supported");
+            if (element == ElementType.CrudeOil) return "CrudeOil";
+            if (element == ElementType.Water) return "Water";
+            if (element == ElementType.PollutedWater) return "DirtyWater";
+            if (element == ElementType.Magma) return "Magma";
+            if (element == ElementType.Oxygen) return "Oxygen";
+            if (element == ElementType.PollutedOxygen) return "ContaminatedOxygen";
+            if (element == ElementType.CarbonDioxide) return "CarbonDioxide";
+            if (element == ElementType.Chlorine) return "ChlorineGas";
+            if (element == ElementType.Hydrogen) return "Hydrogen";
+            if (element == ElementType.MercuryGas) throw new NotImplementedException("Mercury Gas not supported");
+            if (element == ElementType.NaturalGas) return "Methane";
+            if (element == ElementType.Steam) return "Steam";
+            if (element == ElementType.Vacuum) return "Vacuum";
 
             throw new ArgumentException("Element not supported");
         }

@@ -228,35 +228,83 @@ namespace OniTemplate
             // get the name
             template.Name = ViewModel.TemplateName ?? "undefined";
 
-            //// get the size
-            //template.Info.Size.X = ViewModel.Cells.Where(x => x.TileEntity.ElementType != TileType.Null).Max(x => x.Column);
-            //template.Info.Size.Y = ViewModel.Cells.Where(x => x.TileEntity.ElementType != TileType.Null).Max(x => x.Row);
-            //if (ViewModel.Cells.Where(x => x.TileEntity.ElementType != TileType.Null).Min(x => x.Column) == 0) template.Info.Size.X++;
-            //if (ViewModel.Cells.Where(x => x.TileEntity.ElementType != TileType.Null).Min(x => x.Row) == 0) template.Info.Size.Y++;
+            // get the size
+            template.Info.Size.X = ViewModel.Cells.Where(x => x.TileEntities[0].Classification != TileType.Null && x.TileEntities[0].Classification != null).Max(x => x.Column);
+            template.Info.Size.Y = ViewModel.Cells.Where(x => x.TileEntities[0].Classification != TileType.Null && x.TileEntities[0].Classification != null).Max(x => x.Row);
+            if (ViewModel.Cells.Where(x => x.TileEntities[0].Classification != TileType.Null && x.TileEntities[0].Classification != null).Min(x => x.Column) == 0) template.Info.Size.X++;
+            if (ViewModel.Cells.Where(x => x.TileEntities[0].Classification != TileType.Null && x.TileEntities[0].Classification != null).Min(x => x.Row) == 0) template.Info.Size.Y++;
 
-            //// get list of cells that aren't null
-            //var cells = ViewModel.Cells.Where(x => x.TileEntity.ElementType != TileType.Null);
-            //foreach (var cell in cells)
-            //{
-            //    var templateCell = new Cell();
-            //    templateCell.DiseaseCount = cell.TileElementProperty.DiseaseCount;
-            //    templateCell.DiseaseName = cell.TileElementProperty.DiseaseName;
-            //    templateCell.Element = ElementConverter.Convert(cell.TileEntity.Name);
-            //    templateCell.Mass = cell.TileElementProperty.MassGrams;
-            //    templateCell.Temperature = cell.TileElementProperty.TemperatureKelvin;
-            //    templateCell.location_x = cell.Column;
-            //    templateCell.location_y = cell.Row;
-            //    templateCell.preventFoWReveal = null;
-            //    template.Cells.Add(templateCell);
-            //}
+            // get list of cells that aren't null
+            foreach (var cell in ViewModel.Cells)
+            {
+                if (cell.TileEntities[0].Classification == TileType.Null || cell.TileEntities[0].Classification == null) continue;
+                var templateCell = new Cell();
+                templateCell.DiseaseCount = cell.TileEntities[0].TileProperty.DiseaseCount;
+                templateCell.DiseaseName = cell.TileEntities[0].TileProperty.DiseaseName;
+                templateCell.Element = ElementConverter.Convert(cell.TileEntities[0].ElementType.Value);
+                templateCell.Mass = cell.TileEntities[0].TileProperty.MassKiloGrams;
+                templateCell.Temperature = cell.TileEntities[0].TileProperty.TemperatureKelvin;
+                templateCell.location_x = cell.Column;
+                templateCell.location_y = cell.Row;
+                templateCell.preventFoWReveal = null;
+                template.Cells.Add(templateCell);
+            }
 
-            //// serialize all the things
-            //var serializer = new SerializerBuilder()
-            //    .WithNamingConvention(new CamelCaseNamingConvention())
-            //    .Build();
+            // get a list of entities that need to be added - plant specific
+            foreach (var plant in ViewModel.Cells)
+            {
+                if (plant.TileEntities[1].Classification != TileType.Plant || plant.TileEntities[1].Classification == null) continue;
+                var entity = new OtherEntity();
+                entity.Id = EntityConverter.Convert(plant.TileEntities[1].EntityType.Value);
+                entity.location_x = plant.Column;
+                entity.location_y = plant.Row;
+                entity.Element = "Creature";
+                entity.Type = "Other";
+                entity.Temperature = plant.TileEntities[1].TileProperty.TemperatureKelvin;
+                entity.Units = 1;
+                entity.Storage = new List<Storage>();
+                entity.Rottable = new Rottable();
+                entity.Amounts = new List<Amount>();
+                entity.Amounts.Add(new Amount { Id = "AirPressure", Value = 0.5 });
+                entity.Amounts.Add(new Amount { Id = "Maturity", Value = plant.TileEntities[1].TileProperty.Maturity });
+                entity.Amounts.Add(new Amount { Id = "Temperature", Value = plant.TileEntities[1].TileProperty.TemperatureKelvin });
+                entity.Amounts.Add(new Amount { Id = "OldAge" });
+                entity.Amounts.Add(new Amount { Id = "Fertilization" });
+                entity.Amounts.Add(new Amount { Id = "Irrigation" });
+                template.OtherEntities.Add(entity);
+            }
 
-            //var yaml = serializer.Serialize(template);
-            //File.WriteAllText(@"c:\temp\dummy.yaml", yaml);
+            // get a list of entities that need to be added - creature specific
+            foreach (var creature in ViewModel.Cells)
+            {
+                if (creature.TileEntities[1].Classification != TileType.Creature || creature.TileEntities[1].Classification == null) continue;
+                var entity = new OtherEntity();
+                entity.Id = EntityConverter.Convert(creature.TileEntities[1].EntityType.Value);
+                entity.location_x = creature.Column;
+                entity.location_y = creature.Row;
+                entity.Element = "Creature";
+                entity.Type = "Other";
+                entity.Temperature = creature.TileEntities[1].TileProperty.TemperatureKelvin;
+                entity.Units = 1;
+                entity.Storage = new List<Storage>();
+                entity.Rottable = new Rottable();
+                entity.Amounts = new List<Amount>();
+                entity.Amounts.Add(new Amount { Id = "HitPoints", Value = creature.TileEntities[1].TileProperty.HitPoints });
+                entity.Amounts.Add(new Amount { Id = "Temperature", Value = creature.TileEntities[1].TileProperty.TemperatureKelvin });
+                entity.Amounts.Add(new Amount { Id = "OldAge" });
+                entity.Amounts.Add(new Amount { Id = "Fertilization" });
+                entity.Amounts.Add(new Amount { Id = "Irrigation" });
+                template.OtherEntities.Add(entity);
+            }
+
+            // serialize all the things
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(new CamelCaseNamingConvention())
+                .Build();
+
+            var yaml = serializer.Serialize(template);
+            File.WriteAllText($"{template.Name}.yaml", yaml);
+            MessageBox.Show($"Saved {template.Name} to the same folder where this app was launched.");
         }
 
 

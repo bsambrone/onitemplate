@@ -7,7 +7,7 @@
         xmlns:editor="clr-namespace:OniTemplate.Editor"
         xmlns:model="clr-namespace:OniTemplate.Editor.Model"
         mc:Ignorable="d"
-        Title="MainWindow" Height="768" Width="1024" WindowState="Maximized">
+        Title="ONI Template Editor" Height="768" Width="1024" WindowState="Maximized">
     <Window.Resources>
         <editor:ImagePathConverter x:Key="ImagePathConverter"/>
         <model:EditorViewModel x:Key="ViewModel"/>
@@ -55,27 +55,27 @@
                     <Label>Temperature</Label>
                     <StackPanel Orientation="Horizontal">
                         <Label VerticalAlignment="Center">K</Label>
-                        <TextBox Text="{Binding TileProperty.TemperatureKelvin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SelectedTileEntity.TileProperty.TemperatureKelvin, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
                         <Label VerticalAlignment="Center">C</Label>
-                        <TextBox Text="{Binding TileProperty.TemperatureCelcius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SelectedTileEntity.TileProperty.TemperatureCelcius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
                         <Label VerticalAlignment="Center">F</Label>
-                        <TextBox Text="{Binding TileProperty.TemperatureFarenheight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding SelectedTileEntity.TileProperty.TemperatureFarenheight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="False" VerticalAlignment="Center"/>
                     </StackPanel>
                     
-                    <Label Visibility="{Binding PropertyVisibility.ShowMass}">Mass (grams)</Label>
-                    <TextBox Visibility="{Binding PropertyVisibility.ShowMass}" Text="{Binding TileProperty.MassGrams, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <Label Visibility="{Binding PropertyVisibility.ShowMass}">Mass (kg)</Label>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowMass}" Text="{Binding SelectedTileEntity.TileProperty.MassKiloGrams, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                     <Label Visibility="Hidden">Disease (type)</Label>
-                    <TextBox Visibility="{Binding PropertyVisibility.ShowDisease}" Text="{Binding TileProperty.DiseaseName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <TextBox Visibility="Hidden" Text="{Binding SelectedTileEntity.TileProperty.DiseaseName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                     <Label Visibility="Hidden">Disease (count)</Label>
-                    <TextBox Visibility="{Binding PropertyVisibility.ShowDisease}" Text="{Binding TileProperty.DiseaseCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <TextBox Visibility="Hidden" Text="{Binding SelectedTileEntity.TileProperty.DiseaseCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                     <Label Visibility="{Binding PropertyVisibility.ShowMaturation}">Maturation (cycles)</Label>
-                    <TextBox Visibility="{Binding PropertyVisibility.ShowMaturation}" Text="{Binding TileProperty.Maturity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowMaturation}" Text="{Binding SelectedTileEntity.TileProperty.Maturity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
 
                     <Label Visibility="{Binding PropertyVisibility.ShowHitpoints}">Hitpoints</Label>
-                    <TextBox Visibility="{Binding PropertyVisibility.ShowHitpoints}" Text="{Binding TileProperty.HitPoints, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
+                    <TextBox Visibility="{Binding PropertyVisibility.ShowHitpoints}" Text="{Binding SelectedTileEntity.TileProperty.HitPoints, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

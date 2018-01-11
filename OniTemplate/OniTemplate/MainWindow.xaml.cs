@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using OniTemplate.Annotations;
 using OniTemplate.Editor;
 using OniTemplate.Editor.Model;
 using OniTemplate.Extensions;
@@ -226,18 +227,32 @@ namespace OniTemplate
         private void SaveAsTemplate_OnClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
             {
-                SaveOperation(saveFileDialog.FileName);
+                SaveOperation(saveFileDialog.FileName, null);
             }
         }
 
         private void SaveTemplate_OnClick(object sender, RoutedEventArgs e)
         {
-            SaveOperation(System.IO.Path.Combine(ViewModel.TemplatePath, ViewModel.TemplateName));
+            if (ViewModel.LoadedTemplate == null)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    SaveOperation(saveFileDialog.FileName, null);
+                }
+            }
+            else
+            {
+                SaveOperation(ViewModel.TemplatePath, ViewModel.LoadedTemplate);
+            }
+            
         }
 
-        private void SaveOperation(string selectedPath)
+        private void SaveOperation(string selectedPath, [CanBeNull] Template baseTemplate = null)
         {
             var template = new Template();
 
@@ -254,7 +269,8 @@ namespace OniTemplate
             foreach (var cell in ViewModel.Cells)
             {
                 if (cell.TileEntities[0].Classification == TileType.Null || cell.TileEntities[0].Classification == null) continue;
-                var templateCell = new Cell();
+                var existingCell = baseTemplate?.Cells.FirstOrDefault(t => t.location_x == cell.Column && t.location_y == cell.Row);
+                Cell templateCell = existingCell ?? new Cell();
                 templateCell.DiseaseCount = cell.TileEntities[0].TileProperty.DiseaseCount;
                 templateCell.DiseaseName = cell.TileEntities[0].TileProperty.DiseaseName;
                 templateCell.Element = ElementConverter.Convert(cell.TileEntities[0].ElementType.Value);
@@ -270,7 +286,8 @@ namespace OniTemplate
             foreach (var plant in ViewModel.Cells)
             {
                 if (plant.TileEntities[1].Classification != TileType.Plant || plant.TileEntities[1].Classification == null) continue;
-                var entity = new OtherEntity();
+                var existingEntity = baseTemplate?.OtherEntities.FirstOrDefault(t => t.location_x == plant.Column && t.location_y == plant.Row);
+                OtherEntity entity = existingEntity ?? new OtherEntity();
                 entity.Id = EntityConverter.Convert(plant.TileEntities[1].EntityType.Value);
                 entity.location_x = plant.Column;
                 entity.location_y = plant.Row;
@@ -294,7 +311,8 @@ namespace OniTemplate
             foreach (var creature in ViewModel.Cells)
             {
                 if (creature.TileEntities[1].Classification != TileType.Creature || creature.TileEntities[1].Classification == null) continue;
-                var entity = new OtherEntity();
+                var existingEntity = baseTemplate?.OtherEntities.FirstOrDefault(t => t.location_x == creature.Column && t.location_y == creature.Row);
+                OtherEntity entity = existingEntity ?? new OtherEntity();
                 entity.Id = EntityConverter.Convert(creature.TileEntities[1].EntityType.Value);
                 entity.location_x = creature.Column;
                 entity.location_y = creature.Row;
@@ -321,9 +339,8 @@ namespace OniTemplate
             var yaml = serializer.Serialize(template);
             var filePath = selectedPath;
             File.WriteAllText(filePath, yaml);
-            MessageBox.Show($"Saved {template.Name} to the same folder where this app was launched.");
+            MessageBox.Show($"Saved {template.Name} to {filePath}");
         }
-
 
         private void NewTemplate_OnClick(object sender, RoutedEventArgs e)
         {

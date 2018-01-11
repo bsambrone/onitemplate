@@ -111,7 +111,7 @@ namespace OniTemplate.Editor.Model
                             Classification = ClassificationConverter.Convert(EntityConverter.Convert(entitycell.Id)),
                             DisplayName = entitycell.Id,
                             ElementType = null,
-                            EntityType = null,
+                            EntityType = EntityConverter.Convert(entitycell.Id),
                             ImageUri = ImageLocator.Locate(EntityConverter.Convert(entitycell.Id)),
                             TileProperty = new TileProperty
                             {

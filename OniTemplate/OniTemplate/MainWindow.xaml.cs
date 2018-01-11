@@ -14,9 +14,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using OniTemplate.Editor;
 using OniTemplate.Editor.Model;
 using OniTemplate.Extensions;
+using OniTemplate.Helpers;
 using OniTemplate.Model;
 using OniTemplate.Model.Serialization;
 using YamlDotNet.Serialization;
@@ -223,6 +225,20 @@ namespace OniTemplate
 
         private void SaveAsTemplate_OnClick(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SaveOperation(saveFileDialog.FileName);
+            }
+        }
+
+        private void SaveTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveOperation(System.IO.Path.Combine(ViewModel.TemplatePath, ViewModel.TemplateName));
+        }
+
+        private void SaveOperation(string selectedPath)
+        {
             var template = new Template();
 
             // get the name
@@ -303,11 +319,46 @@ namespace OniTemplate
                 .Build();
 
             var yaml = serializer.Serialize(template);
-            File.WriteAllText($"{template.Name}.yaml", yaml);
+            var filePath = selectedPath;
+            File.WriteAllText(filePath, yaml);
             MessageBox.Show($"Saved {template.Name} to the same folder where this app was launched.");
         }
 
 
+        private void NewTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ResetCells(MainGrid);
+        }
 
+        private void LoadTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            var helper = new FileHelper();
+            var oniLocation = helper.GetOniTemplateDirectory();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = oniLocation;
+            string loadedYaml = string.Empty;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                loadedYaml = File.ReadAllText(openFileDialog.FileName);
+                ViewModel.TemplatePath = openFileDialog.FileName;
+            }
+            else
+            {
+                return;
+            }
+
+            try
+            {
+                var deserializer = new TemplateDeserializer();
+                ViewModel.LoadedTemplate = deserializer.Deserialize(loadedYaml);
+            }
+            catch
+            {
+                MessageBox.Show("Could not load template file");
+            }
+
+            ViewModel.ApplyTemplate(MainGrid);
+        }
     }
 }

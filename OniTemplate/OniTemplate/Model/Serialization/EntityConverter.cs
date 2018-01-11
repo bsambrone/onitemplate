@@ -32,5 +32,33 @@ namespace OniTemplate.Model.Serialization
 
             throw new ArgumentException("Entity not supported");
         }
+
+        public static EntityType Convert(string entity)
+        {
+            if (entity == "BasicFabricPlant") return EntityType.BasicFabricPlant;
+            if (entity == "ChlorineGeyser") return EntityType.ChlorineGeyser;
+            if (entity == "ColdBreather") return EntityType.ColdBreather;
+            if (entity == "ColdWheat") return EntityType.ColdWheat;
+            if (entity == "GeneShuffler") return EntityType.GeneShuffler;
+            if (entity == "Geyser") return EntityType.Geyser;
+            if (entity == "Glom") return EntityType.Glom;
+            if (entity == "LightBug") return EntityType.LightBug;
+            if (entity == "MethaneGeyser") return EntityType.MethaneGeyser;
+            if (entity == "MushroomPlant") return EntityType.MushroomPlant;
+            if (entity == "Oilfloater") return EntityType.Oilfloater;
+            if (entity == "OilWell") return EntityType.OilWell;
+            if (entity == "PropClock") return EntityType.PropClock;
+            if (entity == "PropDesk") return EntityType.PropDesk;
+            if (entity == "PropLadder") return EntityType.PropLadder;
+            if (entity == "PropLight") return EntityType.PropLight;
+            if (entity == "PropTable") return EntityType.PropTable;
+            if (entity == "Puft") return EntityType.Puft;
+            if (entity == "SetLocker") return EntityType.SetLocker;
+            if (entity == "SpiceVine") return EntityType.SpiceVine;
+            if (entity == "SwampLily") return EntityType.SwampLily;
+            if (entity == "VendingMachine") return EntityType.VendingMachine;
+
+            throw new ArgumentException("Entity not supported");
+        }
     }
 }

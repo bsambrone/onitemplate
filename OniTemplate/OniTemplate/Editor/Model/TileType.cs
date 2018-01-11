@@ -7,6 +7,8 @@
         Creature,
         Plant,
         Null,
-        Liquid
+        Liquid,
+        Geyser,
+        Building
     }
 }

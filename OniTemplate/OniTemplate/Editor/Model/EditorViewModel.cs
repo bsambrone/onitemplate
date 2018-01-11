@@ -17,11 +17,21 @@ namespace OniTemplate.Editor.Model
     {
         public string TemplateName { get; set; } = "New Template";
         public ObservableCollection<TileCollection> TileCollections { get; set; }
-        public GridCell[] Cells { get; set; }
         public TileEntity SelectedTileEntity { get; set; }
         public PropertyVisibility PropertyVisibility { get; set; }
         public string TemplatePath { get; set; } = string.Empty;
-        public Template LoadedTemplate { get; set; } = new Template();
+        public Template LoadedTemplate { get; set; } 
+
+        private GridCell[] _cells;
+        public GridCell[] Cells
+        {
+            get => _cells;
+            set
+            {
+                _cells = value;
+                OnPropertyChanged(nameof(Cells));
+            }
+        }
 
         // build our palette in the default ctor. this needs to go into configuration later.
         public EditorViewModel()

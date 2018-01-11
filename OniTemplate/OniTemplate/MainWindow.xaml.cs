@@ -236,7 +236,7 @@ namespace OniTemplate
 
         private void SaveTemplate_OnClick(object sender, RoutedEventArgs e)
         {
-            if (ViewModel.LoadedTemplate == null)
+            if (string.IsNullOrEmpty(ViewModel.LoadedTemplate.Name))
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";

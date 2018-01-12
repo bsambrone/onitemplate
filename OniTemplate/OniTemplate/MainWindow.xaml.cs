@@ -228,6 +228,7 @@ namespace OniTemplate
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+            saveFileDialog.FileName = ViewModel.TemplateName;
             if (saveFileDialog.ShowDialog() == true)
             {
                 SaveOperation(saveFileDialog.FileName, null);
@@ -240,6 +241,7 @@ namespace OniTemplate
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+                saveFileDialog.FileName = ViewModel.TemplateName;
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     SaveOperation(saveFileDialog.FileName, null);
@@ -366,10 +368,10 @@ namespace OniTemplate
 
             try
             {
-                var deserializer = new TemplateDeserializer();
-                ViewModel = new EditorViewModel();
+                var deserializer = new TemplateDeserializer();                
                 ViewModel.LoadedTemplate = deserializer.Deserialize(loadedYaml);
                 ViewModel.TemplatePath = openFileDialog.FileName;
+                ViewModel.TemplateName = openFileDialog.SafeFileName;
                 ViewModel.ApplyTemplate(MainGrid);
                 this.DataContext = ViewModel;
             }

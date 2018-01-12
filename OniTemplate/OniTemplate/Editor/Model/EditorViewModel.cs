@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using OniTemplate.Annotations;
 using OniTemplate.Helpers;
@@ -15,7 +14,18 @@ namespace OniTemplate.Editor.Model
 {
     public class EditorViewModel : INotifyPropertyChanged
     {
-        public string TemplateName { get; set; } = "New Template";
+        private string _templateName;
+
+        public string TemplateName
+        {
+            get => _templateName;
+            set
+            {
+                _templateName = value;
+                OnPropertyChanged(nameof(TemplateName));
+            }
+        }
+
         public ObservableCollection<TileCollection> TileCollections { get; set; }
         public TileEntity SelectedTileEntity { get; set; }
         public PropertyVisibility PropertyVisibility { get; set; }
@@ -36,6 +46,7 @@ namespace OniTemplate.Editor.Model
         // build our palette in the default ctor. this needs to go into configuration later.
         public EditorViewModel()
         {
+            TemplateName = "NewTemplate";
             PropertyVisibility = new PropertyVisibility {ShowMass = true, ShowElement = true};
             SelectedTileEntity = new TileEntity();
             SelectedTileEntity.Classification = TileType.Null;

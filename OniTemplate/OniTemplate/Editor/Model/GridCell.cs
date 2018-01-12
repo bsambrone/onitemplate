@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 
 namespace OniTemplate.Editor.Model
 {
@@ -6,11 +6,11 @@ namespace OniTemplate.Editor.Model
     {
         public int Row { get; set; }
         public int Column { get; set; }
-        public List<TileEntity> TileEntities { get; set; }
+        public ObservableCollection<TileEntity> TileEntities { get; set; }
 
         public GridCell()
         {
-            TileEntities = new List<TileEntity>();
+            TileEntities = new ObservableCollection<TileEntity>();
         }
     }
 }

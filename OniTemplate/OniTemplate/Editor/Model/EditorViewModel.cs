@@ -78,13 +78,13 @@ namespace OniTemplate.Editor.Model
                         DisplayName = "null",
                         ImageUri = "null.png"
                     });
-                    cell.Row = x;
-                    cell.Column = y;
+                    cell.Row = y;
+                    cell.Column = x;
                     Cells[iterator] = cell;
 
                     var container = new StackPanel();
-                    Grid.SetRow(container, x);
-                    Grid.SetColumn(container, y);
+                    Grid.SetRow(container, y);
+                    Grid.SetColumn(container, x);
 
                     // get the template cell
                     var templateCell = LoadedTemplate.Cells.FirstOrDefault(t => t.location_x == x && t.location_y == y);

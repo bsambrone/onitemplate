@@ -171,7 +171,7 @@ namespace OniTemplate
 
             // update the render images
             var baseImage = stackPanel.Children[0] as Image;
-            var baseContext = baseImage.DataContext as TileEntity;
+            var baseContext = baseImage.DataContext as TileEntity;            
 
             var entityImage = stackPanel.Children[1] as Image;
             var entityContext = entityImage.DataContext as TileEntity;
@@ -358,7 +358,6 @@ namespace OniTemplate
             if (openFileDialog.ShowDialog() == true)
             {
                 loadedYaml = File.ReadAllText(openFileDialog.FileName);
-                ViewModel.TemplatePath = openFileDialog.FileName;
             }
             else
             {
@@ -368,14 +367,16 @@ namespace OniTemplate
             try
             {
                 var deserializer = new TemplateDeserializer();
+                ViewModel = new EditorViewModel();
                 ViewModel.LoadedTemplate = deserializer.Deserialize(loadedYaml);
+                ViewModel.TemplatePath = openFileDialog.FileName;
+                ViewModel.ApplyTemplate(MainGrid);
+                this.DataContext = ViewModel;
             }
             catch
             {
                 MessageBox.Show("Could not load template file");
             }
-
-            ViewModel.ApplyTemplate(MainGrid);
         }
     }
 }

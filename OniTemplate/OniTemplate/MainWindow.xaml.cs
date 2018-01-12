@@ -14,9 +14,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using OniTemplate.Annotations;
 using OniTemplate.Editor;
 using OniTemplate.Editor.Model;
 using OniTemplate.Extensions;
+using OniTemplate.Helpers;
 using OniTemplate.Model;
 using OniTemplate.Model.Serialization;
 using YamlDotNet.Serialization;
@@ -168,7 +171,7 @@ namespace OniTemplate
 
             // update the render images
             var baseImage = stackPanel.Children[0] as Image;
-            var baseContext = baseImage.DataContext as TileEntity;
+            var baseContext = baseImage.DataContext as TileEntity;            
 
             var entityImage = stackPanel.Children[1] as Image;
             var entityContext = entityImage.DataContext as TileEntity;
@@ -223,6 +226,36 @@ namespace OniTemplate
 
         private void SaveAsTemplate_OnClick(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+            saveFileDialog.FileName = ViewModel.TemplateName;
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SaveOperation(saveFileDialog.FileName, null);
+            }
+        }
+
+        private void SaveTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(ViewModel.LoadedTemplate.Name))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+                saveFileDialog.FileName = ViewModel.TemplateName;
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    SaveOperation(saveFileDialog.FileName, null);
+                }
+            }
+            else
+            {
+                SaveOperation(ViewModel.TemplatePath, ViewModel.LoadedTemplate);
+            }
+            
+        }
+
+        private void SaveOperation(string selectedPath, [CanBeNull] Template baseTemplate = null)
+        {
             var template = new Template();
 
             // get the name
@@ -238,7 +271,8 @@ namespace OniTemplate
             foreach (var cell in ViewModel.Cells)
             {
                 if (cell.TileEntities[0].Classification == TileType.Null || cell.TileEntities[0].Classification == null) continue;
-                var templateCell = new Cell();
+                var existingCell = baseTemplate?.Cells.FirstOrDefault(t => t.location_x == cell.Column && t.location_y == cell.Row);
+                Cell templateCell = existingCell ?? new Cell();
                 templateCell.DiseaseCount = cell.TileEntities[0].TileProperty.DiseaseCount;
                 templateCell.DiseaseName = cell.TileEntities[0].TileProperty.DiseaseName;
                 templateCell.Element = ElementConverter.Convert(cell.TileEntities[0].ElementType.Value);
@@ -254,7 +288,8 @@ namespace OniTemplate
             foreach (var plant in ViewModel.Cells)
             {
                 if (plant.TileEntities[1].Classification != TileType.Plant || plant.TileEntities[1].Classification == null) continue;
-                var entity = new OtherEntity();
+                var existingEntity = baseTemplate?.OtherEntities.FirstOrDefault(t => t.location_x == plant.Column && t.location_y == plant.Row);
+                OtherEntity entity = existingEntity ?? new OtherEntity();
                 entity.Id = EntityConverter.Convert(plant.TileEntities[1].EntityType.Value);
                 entity.location_x = plant.Column;
                 entity.location_y = plant.Row;
@@ -278,7 +313,8 @@ namespace OniTemplate
             foreach (var creature in ViewModel.Cells)
             {
                 if (creature.TileEntities[1].Classification != TileType.Creature || creature.TileEntities[1].Classification == null) continue;
-                var entity = new OtherEntity();
+                var existingEntity = baseTemplate?.OtherEntities.FirstOrDefault(t => t.location_x == creature.Column && t.location_y == creature.Row);
+                OtherEntity entity = existingEntity ?? new OtherEntity();
                 entity.Id = EntityConverter.Convert(creature.TileEntities[1].EntityType.Value);
                 entity.location_x = creature.Column;
                 entity.location_y = creature.Row;
@@ -303,11 +339,46 @@ namespace OniTemplate
                 .Build();
 
             var yaml = serializer.Serialize(template);
-            File.WriteAllText($"{template.Name}.yaml", yaml);
-            MessageBox.Show($"Saved {template.Name} to the same folder where this app was launched.");
+            var filePath = selectedPath;
+            File.WriteAllText(filePath, yaml);
+            MessageBox.Show($"Saved {template.Name} to {filePath}");
         }
 
+        private void NewTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ResetCells(MainGrid);
+        }
 
+        private void LoadTemplate_OnClick(object sender, RoutedEventArgs e)
+        {
+            var helper = new FileHelper();
+            var oniLocation = helper.GetOniTemplateDirectory();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "YAML Files (*.yaml)|*.yaml|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = oniLocation;
+            string loadedYaml = string.Empty;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                loadedYaml = File.ReadAllText(openFileDialog.FileName);
+            }
+            else
+            {
+                return;
+            }
 
+            try
+            {
+                var deserializer = new TemplateDeserializer();                
+                ViewModel.LoadedTemplate = deserializer.Deserialize(loadedYaml);
+                ViewModel.TemplatePath = openFileDialog.FileName;
+                ViewModel.TemplateName = openFileDialog.SafeFileName;
+                ViewModel.ApplyTemplate(MainGrid);
+                this.DataContext = ViewModel;
+            }
+            catch
+            {
+                MessageBox.Show("Could not load template file");
+            }
+        }
     }
 }

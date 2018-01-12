@@ -1,25 +1,52 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using OniTemplate.Annotations;
+using OniTemplate.Helpers;
+using OniTemplate.Model;
+using OniTemplate.Model.Serialization;
 
 namespace OniTemplate.Editor.Model
 {
     public class EditorViewModel : INotifyPropertyChanged
     {
-        public string TemplateName { get; set; } = "New Template";
+        private string _templateName;
+
+        public string TemplateName
+        {
+            get => _templateName;
+            set
+            {
+                _templateName = value;
+                OnPropertyChanged(nameof(TemplateName));
+            }
+        }
+
         public ObservableCollection<TileCollection> TileCollections { get; set; }
-        public GridCell[] Cells { get; set; }
         public TileEntity SelectedTileEntity { get; set; }
         public PropertyVisibility PropertyVisibility { get; set; }
+        public string TemplatePath { get; set; } = string.Empty;
+        public Template LoadedTemplate { get; set; } 
+
+        private GridCell[] _cells;
+        public GridCell[] Cells
+        {
+            get => _cells;
+            set
+            {
+                _cells = value;
+                OnPropertyChanged(nameof(Cells));
+            }
+        }
 
         // build our palette in the default ctor. this needs to go into configuration later.
         public EditorViewModel()
         {
+            TemplateName = "NewTemplate";
             PropertyVisibility = new PropertyVisibility {ShowMass = true, ShowElement = true};
             SelectedTileEntity = new TileEntity();
             SelectedTileEntity.Classification = TileType.Null;
@@ -41,8 +68,104 @@ namespace OniTemplate.Editor.Model
             SetSelectedTile(TileCollections[0].Items[0]);
         }
 
+        public void ApplyTemplate(BorderGrid grid)
+        {
+            Cells = new GridCell[256];
+            int iterator = 0;
+            for (int x = 0; x < 16; x++)
+            {
+                for (int y = 0; y < 16; y++)
+                {
+                    var cell = new GridCell();
+                    // child 1 will be the element
+                    cell.TileEntities.Add(new TileEntity
+                    {
+                        DisplayName = "null",
+                        ImageUri = "null.png"
+                    });
+                    // child 2 will be any optional entities
+                    cell.TileEntities.Add(new TileEntity
+                    {
+                        DisplayName = "null",
+                        ImageUri = "null.png"
+                    });
+                    cell.Row = y;
+                    cell.Column = x;
+                    Cells[iterator] = cell;
+
+                    var container = new StackPanel();
+                    Grid.SetRow(container, y);
+                    Grid.SetColumn(container, x);
+
+                    // get the template cell
+                    var templateCell = LoadedTemplate.Cells.FirstOrDefault(t => t.location_x == x && t.location_y == y);
+                    if (templateCell != null)
+                    {
+                        cell.TileEntities[0] = new TileEntity
+                        {
+                            Classification = ClassificationConverter.Convert(ElementConverter.Convert(templateCell.Element)),
+                            DisplayName = templateCell.Element,
+                            ElementType = ElementConverter.Convert(templateCell.Element),
+                            EntityType = null,
+                            ImageUri = ImageLocator.Locate(ElementConverter.Convert(templateCell.Element)),
+                            TileProperty = new TileProperty
+                            {
+                                DiseaseCount = templateCell.DiseaseCount,
+                                DiseaseName = templateCell.DiseaseName,
+                                HitPoints = 0,
+                                MassKiloGrams = templateCell.Mass,
+                                Maturity = 0,
+                                TemperatureKelvin = templateCell.Temperature
+                            }
+                        };
+                    }
+
+                    // get the template entity
+                    var entitycell = LoadedTemplate.OtherEntities.FirstOrDefault(t => t.location_x == x && t.location_y == y);
+                    if (entitycell != null)
+                    {
+                        double? maturation = entitycell.Amounts.Where(e => e.Id == "Maturity").Select(e => e.Value).FirstOrDefault();
+                        double? hitpoints = entitycell.Amounts.Where(e => e.Id == "HitPoints").Select(e => e.Value).FirstOrDefault();
+
+                        cell.TileEntities[1] = new TileEntity
+                        {
+                            Classification = ClassificationConverter.Convert(EntityConverter.Convert(entitycell.Id)),
+                            DisplayName = entitycell.Id,
+                            ElementType = null,
+                            EntityType = EntityConverter.Convert(entitycell.Id),
+                            ImageUri = ImageLocator.Locate(EntityConverter.Convert(entitycell.Id)),
+                            TileProperty = new TileProperty
+                            {
+                                DiseaseCount = entitycell.DiseaseCount,
+                                DiseaseName = entitycell.DiseaseName,
+                                HitPoints = hitpoints ?? 25,                                
+                                Maturity = maturation ?? 1,
+                                TemperatureKelvin = entitycell.Temperature
+                            }
+                        };
+                    }
+
+                    var baseImage = new Image();
+                    baseImage.DataContext = cell.TileEntities[0];
+                    baseImage.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + cell.TileEntities[0].ImageUri));
+
+                    var entityImage = new Image();
+                    entityImage.DataContext = cell.TileEntities[1];
+                    entityImage.Source = new BitmapImage(new Uri("pack://application:,,,/OniTemplate;component/Images/" + cell.TileEntities[1].ImageUri));
+
+                    container.Children.Add(baseImage);
+                    container.Children.Add(entityImage);
+
+                    grid.Children.Add(container);
+                    iterator++;
+                }
+            }
+        }
+
         public void ResetCells(BorderGrid grid)
         {
+            LoadedTemplate = new Template();
+            TemplatePath = string.Empty;
             Cells = new GridCell[256];
             int iterator = 0;
             for (int x = 0; x < 16; x++)
@@ -136,7 +259,7 @@ namespace OniTemplate.Editor.Model
             var minerals = new TileCollection();
             minerals.Name = "Raw Minerals";
             minerals.Items = new ObservableCollection<TileEntity>();
-            //minerals.Items.Add(new TileEntity { DisplayName = "Abyssalite", ImageUri = "50px-Abyssalite.png", Classification = TileType.SolidElement, ElementType = ElementType.Abyssalite});
+            minerals.Items.Add(new TileEntity { DisplayName = "Abyssalite", ImageUri = "50px-Abyssalite.png", Classification = TileType.SolidElement, ElementType = ElementType.Abyssalite});
             minerals.Items.Add(new TileEntity { DisplayName = "Diamond", ImageUri = "placeholder.png", Classification = TileType.SolidElement, ElementType = ElementType.Diamond });
             minerals.Items.Add(new TileEntity { DisplayName = "Granite", ImageUri = "50px-Granite.png", Classification = TileType.SolidElement, ElementType = ElementType.Granite });
             minerals.Items.Add(new TileEntity { DisplayName = "Igneous Rock", ImageUri = "50px-Igneous_rock.png", Classification = TileType.SolidElement, ElementType = ElementType.IgneousRock });
@@ -176,7 +299,7 @@ namespace OniTemplate.Editor.Model
             var consumables = new TileCollection();
             consumables.Name = "Consumable Ores";
             consumables.Items = new ObservableCollection<TileEntity>();
-            //consumables.Items.Add(new TileEntity { DisplayName = "Coal", ImageUri = "50px-Coal.png", Classification = TileType.SolidElement, ElementType = ElementType.Coal });
+            consumables.Items.Add(new TileEntity { DisplayName = "Coal", ImageUri = "50px-Coal.png", Classification = TileType.SolidElement, ElementType = ElementType.Coal });
             consumables.Items.Add(new TileEntity { DisplayName = "Oxylite", ImageUri = "50px-Oxylite.png", Classification = TileType.SolidElement, ElementType = ElementType.Oxylite });
             consumables.Items.Add(new TileEntity { DisplayName = "Bleach Stone", ImageUri = "50px-Bleach_Stone.png", Classification = TileType.SolidElement, ElementType = ElementType.BleachStone });
 
